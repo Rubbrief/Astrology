@@ -20,572 +20,160 @@
     --indigo: #5b4fcf;
     --indigo-light: #8b7fe8;
     --star: #f0e6ff;
-    --mist: rgba(255,255,255,0.06);
     --glass: rgba(255,255,255,0.04);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
+  body { background: var(--void); color: var(--star); font-family: 'Sarabun', sans-serif; overflow-x: hidden; }
 
-  body {
-    background: var(--void);
-    color: var(--star);
-    font-family: 'Sarabun', sans-serif;
-    overflow-x: hidden;
-  }
-
-  /* ── PARALLAX HERO ── */
+  /* ── HERO ── */
   .hero {
-    position: relative;
-    height: 100vh;
-    min-height: 700px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    text-align: center;
+    position: relative; height: 100vh; min-height: 700px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden; text-align: center;
   }
-
   .parallax-bg {
-    position: absolute;
-    inset: -20%;
+    position: absolute; inset: -20%;
     background: radial-gradient(ellipse 80% 60% at 50% 40%, #1a0f3a 0%, #080618 60%, #000 100%);
-    z-index: 0;
-    will-change: transform;
+    z-index: 0; will-change: transform;
   }
-
-  .stars-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-  }
-
+  .stars-layer { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
   .star-dot {
-    position: absolute;
-    border-radius: 50%;
-    background: white;
-    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+    position: absolute; border-radius: 50%; background: white;
+    animation: twinkle var(--d,3s) ease-in-out infinite var(--delay,0s);
   }
+  @keyframes twinkle { 0%,100%{opacity:var(--min-op,.3);transform:scale(1)} 50%{opacity:1;transform:scale(1.4)} }
+  .nebula { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; z-index: 1; }
+  .nebula-1 { width:500px;height:300px;background:radial-gradient(ellipse,rgba(91,79,207,.25),transparent);top:10%;left:-10%;animation:drift 18s ease-in-out infinite; }
+  .nebula-2 { width:400px;height:400px;background:radial-gradient(ellipse,rgba(196,92,122,.18),transparent);top:30%;right:-5%;animation:drift 22s ease-in-out infinite reverse; }
+  .nebula-3 { width:600px;height:250px;background:radial-gradient(ellipse,rgba(74,158,138,.15),transparent);bottom:5%;left:20%;animation:drift 25s ease-in-out infinite 5s; }
+  @keyframes drift { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.1)} 66%{transform:translate(-20px,15px) scale(.95)} }
+  .orbital-ring { position:absolute;border-radius:50%;border:1px solid;pointer-events:none;z-index:2; }
+  .ring-1{width:300px;height:300px;border-color:rgba(201,168,76,.15);top:50%;left:50%;transform:translate(-50%,-50%);animation:spin 40s linear infinite;}
+  .ring-2{width:480px;height:480px;border-color:rgba(201,168,76,.08);top:50%;left:50%;transform:translate(-50%,-50%);animation:spin 65s linear infinite reverse;}
+  .ring-3{width:650px;height:650px;border-color:rgba(201,168,76,.05);top:50%;left:50%;transform:translate(-50%,-50%);animation:spin 90s linear infinite;}
+  .ring-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--gold);top:-3px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--gold);}
+  @keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .hero-content { position:relative;z-index:10;padding:0 20px; }
+  .hero-eyebrow { font-family:'Cinzel Decorative',serif;font-size:.72rem;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp 1s ease forwards .3s; }
+  .hero-title { font-family:'Noto Serif Thai',serif;font-size:clamp(3rem,8vw,6.5rem);font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold-pale) 0%,var(--gold) 40%,var(--gold-light) 70%,#fff5cc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;opacity:0;animation:fadeUp 1s ease forwards .5s; }
+  .hero-sub { font-family:'Cinzel Decorative',serif;font-size:clamp(.8rem,2vw,1.1rem);letter-spacing:.2em;color:rgba(255,255,255,.5);margin-bottom:50px;opacity:0;animation:fadeUp 1s ease forwards .7s; }
+  .scroll-cta { display:inline-flex;align-items:center;gap:10px;color:var(--gold);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:fadeUp 1s ease forwards 1s;cursor:pointer;border:none;background:none;text-decoration:none; }
+  .scroll-cta svg{width:18px;animation:bounceY 1.5s ease-in-out infinite;}
+  @keyframes bounceY{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-  @keyframes twinkle {
-    0%, 100% { opacity: var(--min-op, 0.3); transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.4); }
-  }
-
-  .nebula {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    pointer-events: none;
-    z-index: 1;
-  }
-  .nebula-1 { width: 500px; height: 300px; background: radial-gradient(ellipse, rgba(91,79,207,0.25), transparent); top: 10%; left: -10%; animation: drift 18s ease-in-out infinite; }
-  .nebula-2 { width: 400px; height: 400px; background: radial-gradient(ellipse, rgba(196,92,122,0.18), transparent); top: 30%; right: -5%; animation: drift 22s ease-in-out infinite reverse; }
-  .nebula-3 { width: 600px; height: 250px; background: radial-gradient(ellipse, rgba(74,158,138,0.15), transparent); bottom: 5%; left: 20%; animation: drift 25s ease-in-out infinite 5s; }
-
-  @keyframes drift {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -20px) scale(1.1); }
-    66% { transform: translate(-20px, 15px) scale(0.95); }
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    padding: 0 20px;
-  }
-
-  .hero-eyebrow {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.35em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 0.3s;
-  }
-
-  .hero-title {
-    font-family: 'Noto Serif Thai', serif;
-    font-size: clamp(3rem, 8vw, 6.5rem);
-    font-weight: 700;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--gold-pale) 0%, var(--gold) 40%, var(--gold-light) 70%, #fff5cc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 0.5s;
-  }
-
-  .hero-sub {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(0.8rem, 2vw, 1.1rem);
-    letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 50px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 0.7s;
-  }
-
-  .scroll-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--gold);
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 1s, bobble 2s ease-in-out infinite 2s;
-    cursor: pointer;
-    border: none;
-    background: none;
-    text-decoration: none;
-  }
-  .scroll-cta svg { width: 18px; animation: bounceY 1.5s ease-in-out infinite; }
-
-  @keyframes bounceY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* ── ORBITAL DECORATION ── */
-  .orbital-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid;
-    pointer-events: none;
-    z-index: 2;
-  }
-  .ring-1 { width: 300px; height: 300px; border-color: rgba(201,168,76,0.15); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: spin 40s linear infinite; }
-  .ring-2 { width: 480px; height: 480px; border-color: rgba(201,168,76,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: spin 65s linear infinite reverse; }
-  .ring-3 { width: 650px; height: 650px; border-color: rgba(201,168,76,0.05); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: spin 90s linear infinite; }
-
-  .ring-dot {
-    position: absolute;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-    top: -3px; left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 0 8px var(--gold);
-  }
-
-  @keyframes spin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+  /* ── FEATURES ── */
+  .features { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto 80px;padding:0 20px; }
+  .feature-item { text-align:center;padding:32px 20px;border-radius:20px;border:1px solid rgba(255,255,255,.06);background:var(--glass);transition:border-color .3s,transform .3s; }
+  .feature-item:hover { border-color:rgba(201,168,76,.2);transform:translateY(-4px); }
+  .feature-icon{font-size:2rem;margin-bottom:12px;display:block;}
+  .feature-name{font-family:'Noto Serif Thai',serif;font-size:1rem;color:var(--gold-light);margin-bottom:8px;font-weight:600;}
+  .feature-desc{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.7;}
 
   /* ── FORM SECTION ── */
-  .form-section {
-    position: relative;
-    padding: 100px 20px;
-    background: linear-gradient(180deg, var(--void) 0%, var(--deep) 50%, var(--void) 100%);
-  }
-
-  .section-title {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-  .section-eyebrow {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.4em;
-    color: var(--gold);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 12px;
-  }
-  .section-heading {
-    font-family: 'Noto Serif Thai', serif;
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 600;
-    color: var(--star);
-  }
-  .section-divider {
-    width: 80px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 16px auto 0;
-  }
-
-  .form-card {
-    max-width: 560px;
-    margin: 0 auto;
-    background: var(--glass);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 24px;
-    padding: 48px 40px;
-    backdrop-filter: blur(20px);
-    position: relative;
-    overflow: hidden;
-  }
-  .form-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
-  }
-
-  .field-group {
-    margin-bottom: 28px;
-  }
-  .field-label {
-    display: block;
-    font-size: 0.78rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-  .field-input {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 14px 18px;
-    color: var(--star);
-    font-family: 'Sarabun', sans-serif;
-    font-size: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    outline: none;
-  }
-  .field-input:focus {
-    border-color: rgba(201,168,76,0.5);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
-  }
-  .field-input::placeholder { color: rgba(255,255,255,0.25); }
-
-  .date-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-
-  .field-select {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 14px 18px;
-    color: var(--star);
-    font-family: 'Sarabun', sans-serif;
-    font-size: 1rem;
-    cursor: pointer;
-    outline: none;
-    appearance: none;
-    transition: border-color 0.3s;
-  }
-  .field-select:focus { border-color: rgba(201,168,76,0.5); }
-  .field-select option { background: #1a1330; }
+  .form-section { position:relative;padding:100px 20px;background:linear-gradient(180deg,var(--void) 0%,var(--deep) 50%,var(--void) 100%); }
+  .section-title { text-align:center;margin-bottom:60px; }
+  .section-eyebrow { font-family:'Cinzel Decorative',serif;font-size:.65rem;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:12px; }
+  .section-heading { font-family:'Noto Serif Thai',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600;color:var(--star); }
+  .section-divider { width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px auto 0; }
+  .form-card { max-width:560px;margin:0 auto;background:var(--glass);border:1px solid rgba(201,168,76,.15);border-radius:24px;padding:48px 40px;backdrop-filter:blur(20px);position:relative;overflow:hidden; }
+  .form-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.4),transparent); }
+  .field-group { margin-bottom:28px; }
+  .field-label { display:block;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600; }
+  .field-input { width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;color:var(--star);font-family:'Sarabun',sans-serif;font-size:1rem;transition:border-color .3s,box-shadow .3s;outline:none; }
+  .field-input:focus { border-color:rgba(201,168,76,.5);box-shadow:0 0 0 3px rgba(201,168,76,.08); }
+  .field-input::placeholder { color:rgba(255,255,255,.25); }
+  .date-row { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px; }
+  .field-select { width:100%;background:rgba(20,15,40,.95);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;color:var(--star);font-family:'Sarabun',sans-serif;font-size:1rem;cursor:pointer;outline:none;appearance:none;transition:border-color .3s; }
+  .field-select:focus { border-color:rgba(201,168,76,.5); }
+  .field-select option { background:#1a1330;color:var(--star); }
 
   /* ── CATEGORY PILLS ── */
-  .category-section {
-    margin-bottom: 32px;
-  }
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
+  .category-section { margin-bottom:32px; }
+  .category-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px; }
   .cat-pill {
-    position: relative;
-    padding: 12px 8px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.03);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s;
-    user-select: none;
+    padding:14px 8px;border-radius:12px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.03);
+    cursor:pointer;text-align:center;
+    transition:all .25s ease;
+    user-select:none;
+    -webkit-user-select:none;
   }
-  .cat-pill input[type=checkbox] { display: none; }
-  .cat-pill .cat-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
-  .cat-pill .cat-name { font-size: 0.72rem; color: rgba(255,255,255,0.6); font-weight: 600; letter-spacing: 0.05em; }
-  .cat-pill .cat-system { font-size: 0.6rem; color: rgba(255,255,255,0.3); display: block; margin-top: 2px; }
-  .cat-pill.selected {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    box-shadow: 0 0 16px rgba(201,168,76,0.15);
-  }
-  .cat-pill.selected .cat-name { color: var(--gold-light); }
+  .cat-pill:hover { border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.05); }
+  .cat-icon { font-size:1.4rem;display:block;margin-bottom:5px;pointer-events:none; }
+  .cat-name { font-size:.72rem;color:rgba(255,255,255,.6);font-weight:600;letter-spacing:.05em;pointer-events:none;display:block; }
+  .cat-system { font-size:.6rem;color:rgba(255,255,255,.3);display:block;margin-top:2px;pointer-events:none; }
+  .cat-pill.selected { border-color:var(--gold);background:rgba(201,168,76,.12);box-shadow:0 0 18px rgba(201,168,76,.18); }
+  .cat-pill.selected .cat-name { color:var(--gold-light); }
+  .cat-pill.selected .cat-icon { filter:drop-shadow(0 0 6px rgba(201,168,76,.6)); }
 
-  .btn-divine {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #a07830, var(--gold), #c9a84c, #e8c97a);
-    background-size: 200% 200%;
-    border: none;
-    border-radius: 14px;
-    color: var(--ink);
-    font-family: 'Noto Serif Thai', serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.4s;
-    animation: shimmerBG 4s ease infinite;
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-divine:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(201,168,76,0.35);
-  }
-  .btn-divine:active { transform: translateY(0); }
-  .btn-divine:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  @keyframes shimmerBG { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  /* ── BUTTON ── */
+  .btn-divine { width:100%;padding:18px;background:linear-gradient(135deg,#a07830,var(--gold),#c9a84c,#e8c97a);background-size:200% 200%;border:none;border-radius:14px;color:var(--ink);font-family:'Noto Serif Thai',serif;font-size:1.05rem;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:all .4s;animation:shimmerBG 4s ease infinite;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px; }
+  .btn-divine:hover:not(:disabled) { transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.35); }
+  .btn-divine:active:not(:disabled) { transform:translateY(0); }
+  .btn-divine:disabled { opacity:.55;cursor:not-allowed;transform:none; }
+  @keyframes shimmerBG{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .btn-spinner { width:16px;height:16px;border:2px solid rgba(13,10,26,.3);border-top-color:var(--ink);border-radius:50%;animation:spinFast .6s linear infinite;flex-shrink:0; }
+  @keyframes spinFast{to{transform:rotate(360deg)}}
 
-  /* ── RESULT SECTION ── */
-  .result-section {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 20px 100px;
-    display: none;
-  }
-  .result-section.visible { display: block; }
+  /* ── RESULT ── */
+  .result-section { max-width:900px;margin:0 auto;padding:0 20px 100px;display:none; }
+  .result-section.visible { display:block; }
+  .result-tabs { display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap;justify-content:center; }
+  .result-tab { padding:9px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.5);font-family:'Sarabun',sans-serif;font-size:.85rem;cursor:pointer;transition:all .3s;font-weight:600; }
+  .result-tab.active { border-color:var(--gold);background:rgba(201,168,76,.12);color:var(--gold-light); }
+  .result-tab:hover:not(.active) { border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.8); }
+  .result-panel { display:none; }
+  .result-panel.active { display:block;animation:fadeIn .5s ease; }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .result-card { background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:36px;margin-bottom:20px;position:relative;overflow:hidden; }
+  .result-card::before { content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-grad,linear-gradient(90deg,var(--gold),var(--gold-light))); }
+  .result-card.thai   { --accent-grad:linear-gradient(90deg,#c45c7a,#e87fa0); }
+  .result-card.chinese{ --accent-grad:linear-gradient(90deg,#c45c1a,#f09020); }
+  .result-card.western{ --accent-grad:linear-gradient(90deg,var(--indigo),var(--indigo-light)); }
+  .result-card.jade   { --accent-grad:linear-gradient(90deg,var(--jade),var(--jade-light)); }
+  .result-card.all    { --accent-grad:linear-gradient(90deg,var(--jade),var(--gold),var(--indigo)); }
+  .result-body { font-size:.97rem;line-height:2;color:rgba(255,255,255,.85); }
+  .result-body p { margin-bottom:.8em; }
+  .result-body strong { color:var(--gold-light); }
+  .section-icon { font-size:1.3rem;vertical-align:middle;margin-right:4px; }
 
-  .result-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .result-tab {
-    padding: 9px 22px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: transparent;
-    color: rgba(255,255,255,0.5);
-    font-family: 'Sarabun', sans-serif;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: 600;
-  }
-  .result-tab.active {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.12);
-    color: var(--gold-light);
-  }
-  .result-tab:hover:not(.active) {
-    border-color: rgba(255,255,255,0.25);
-    color: rgba(255,255,255,0.8);
-  }
-
-  .result-panel { display: none; }
-  .result-panel.active { display: block; animation: fadeIn 0.5s ease; }
-
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  .result-card {
-    background: var(--glass);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 36px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .result-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 3px;
-    background: var(--accent-grad, linear-gradient(90deg, var(--gold), var(--gold-light)));
-  }
-  .result-card.thai { --accent-grad: linear-gradient(90deg, #c45c7a, #e87fa0); }
-  .result-card.chinese { --accent-grad: linear-gradient(90deg, #c45c1a, #f09020); }
-  .result-card.western { --accent-grad: linear-gradient(90deg, var(--indigo), var(--indigo-light)); }
-  .result-card.all { --accent-grad: linear-gradient(90deg, var(--jade), var(--gold), var(--indigo)); }
-
-  .result-card-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .result-system-badge {
-    font-size: 1.6rem;
-  }
-  .result-card-title {
-    font-family: 'Noto Serif Thai', serif;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--gold-light);
-  }
-  .result-card-sub {
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.4);
-    margin-top: 2px;
-  }
-
-  .result-body {
-    font-size: 0.97rem;
-    line-height: 1.9;
-    color: rgba(255,255,255,0.82);
-    white-space: pre-wrap;
-  }
-
-  .loading-orb {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px;
-    gap: 20px;
-  }
-  .orb {
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    border: 2px solid rgba(201,168,76,0.3);
-    border-top-color: var(--gold);
-    animation: spin-fast 0.8s linear infinite;
-  }
-  @keyframes spin-fast { to { transform: rotate(360deg); } }
-  .loading-text {
-    font-family: 'Noto Serif Thai', serif;
-    color: rgba(255,255,255,0.5);
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── FEATURES STRIP ── */
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    max-width: 900px;
-    margin: 0 auto 80px;
-    padding: 0 20px;
-  }
-  .feature-item {
-    text-align: center;
-    padding: 32px 20px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.06);
-    background: var(--glass);
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .feature-item:hover {
-    border-color: rgba(201,168,76,0.2);
-    transform: translateY(-4px);
-  }
-  .feature-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-  .feature-name {
-    font-family: 'Noto Serif Thai', serif;
-    font-size: 1rem;
-    color: var(--gold-light);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .feature-desc { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.7; }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 40px 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    color: rgba(255,255,255,0.2);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 640px) {
-    .form-card { padding: 30px 20px; }
-    .category-grid { grid-template-columns: repeat(2, 1fr); }
-    .features { grid-template-columns: 1fr; }
-    .ring-2, .ring-3 { display: none; }
-    .date-row { grid-template-columns: 1fr; }
-  }
-
-  /* Highlight stars */
-  .highlight { color: var(--gold-light); font-weight: 600; }
-  .highlight-jade { color: var(--jade-light); font-weight: 600; }
-  .highlight-rose { color: var(--rose-light); font-weight: 600; }
-  .highlight-indigo { color: var(--indigo-light); font-weight: 600; }
-
-  /* ── JADE CARD ── */
-  .result-card.jade { --accent-grad: linear-gradient(90deg, var(--jade), var(--jade-light)); }
-
-  /* ── GOLD TEXT ── */
-  .gold-text { color: var(--gold-light); }
-
-  /* ── SECTION ICONS ── */
-  .section-icon { font-size: 1.3rem; display: inline-block; vertical-align: middle; margin-right: 4px; }
-
-  /* ── PARA SPACING ── */
-  .para { margin-top: 1em; display: block; }
+  /* ── LOADING ── */
+  .loading-orb { display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;gap:20px; }
+  .orb { width:60px;height:60px;border-radius:50%;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);animation:spinFast .8s linear infinite; }
+  .loading-text { font-family:'Noto Serif Thai',serif;color:rgba(255,255,255,.5);font-size:.9rem;letter-spacing:.1em; }
 
   /* ── CURSOR BLINK ── */
-  .cursor-blink {
-    display: inline-block;
-    color: var(--gold);
-    animation: blink 0.8s step-end infinite;
-    font-weight: 300;
-    margin-left: 2px;
-  }
-  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .cursor-blink { display:inline-block;color:var(--gold);animation:blink .8s step-end infinite;margin-left:2px; }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-  /* ── BTN SPINNER ── */
-  .btn-spinner {
-    display: inline-block;
-    width: 14px; height: 14px;
-    border: 2px solid rgba(0,0,0,0.2);
-    border-top-color: var(--ink);
-    border-radius: 50%;
-    animation: spin-fast 0.6s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
-  }
+  /* ── ERROR ── */
+  .error-box { display:flex;align-items:flex-start;gap:14px;padding:24px;border-radius:12px;background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.2);color:rgba(255,160,160,.9);font-size:.9rem;line-height:1.7; }
+  .error-icon { font-size:1.4rem;flex-shrink:0; }
 
   /* ── TOAST ── */
-  #toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: rgba(30,20,60,0.95);
-    border: 1px solid rgba(201,168,76,0.4);
-    color: var(--gold-light);
-    padding: 14px 28px;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-family: 'Sarabun', sans-serif;
-    letter-spacing: 0.05em;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    z-index: 9999;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    backdrop-filter: blur(20px);
-    white-space: nowrap;
-  }
-  #toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  #toast { position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(25,15,50,.97);border:1px solid rgba(201,168,76,.4);color:var(--gold-light);padding:14px 28px;border-radius:999px;font-size:.9rem;font-family:'Sarabun',sans-serif;letter-spacing:.05em;opacity:0;pointer-events:none;transition:all .3s ease;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.6);backdrop-filter:blur(20px);white-space:nowrap; }
+  #toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
 
-  /* ── ERROR BOX ── */
-  .error-box {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 24px;
-    border-radius: 12px;
-    background: rgba(255,80,80,0.07);
-    border: 1px solid rgba(255,80,80,0.15);
-    color: rgba(255,150,150,0.9);
-    font-size: 0.9rem;
-    line-height: 1.6;
+  /* ── FOOTER ── */
+  footer { text-align:center;padding:40px 20px;border-top:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.2);font-size:.78rem;letter-spacing:.1em; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:640px){
+    .form-card{padding:28px 18px;}
+    .category-grid{grid-template-columns:repeat(2,1fr);}
+    .features{grid-template-columns:1fr;}
+    .ring-2,.ring-3{display:none;}
+    .date-row{grid-template-columns:1fr;}
   }
-  .error-icon { font-size: 1.4rem; flex-shrink: 0; }
 </style>
 </head>
 <body>
+
+<div id="toast"></div>
 
 <!-- HERO -->
 <section class="hero">
@@ -594,11 +182,9 @@
   <div class="nebula nebula-1"></div>
   <div class="nebula nebula-2"></div>
   <div class="nebula nebula-3"></div>
-
   <div class="orbital-ring ring-1"><div class="ring-dot"></div></div>
   <div class="orbital-ring ring-2"><div class="ring-dot" style="left:30%;top:auto;bottom:-3px;"></div></div>
   <div class="orbital-ring ring-3"><div class="ring-dot" style="left:70%;"></div></div>
-
   <div class="hero-content">
     <p class="hero-eyebrow">✦ ศาสตร์แห่งดวงดาว ✦</p>
     <h1 class="hero-title">ดาวทำนาย</h1>
@@ -610,7 +196,7 @@
   </div>
 </section>
 
-<!-- FEATURES STRIP -->
+<!-- FEATURES -->
 <div class="features">
   <div class="feature-item">
     <span class="feature-icon">🏮</span>
@@ -636,325 +222,163 @@
     <h2 class="section-heading">กรอกข้อมูลของคุณ</h2>
     <div class="section-divider"></div>
   </div>
-
   <div class="form-card">
     <div class="field-group">
       <label class="field-label" for="name-input">✦ ชื่อจริง</label>
-      <input class="field-input" id="name-input" type="text" placeholder="ใส่ชื่อจริงของคุณ">
+      <input class="field-input" id="name-input" type="text" placeholder="ใส่ชื่อจริงของคุณ" autocomplete="off">
     </div>
-
     <div class="field-group">
       <label class="field-label">✦ วันเดือนปีเกิด</label>
       <div class="date-row">
-        <div>
-          <select class="field-select" id="sel-day">
-            <option value="">วัน</option>
-          </select>
-        </div>
-        <div>
-          <select class="field-select" id="sel-month">
-            <option value="">เดือน</option>
-          </select>
-        </div>
-        <div>
-          <select class="field-select" id="sel-year">
-            <option value="">ปี</option>
-          </select>
-        </div>
+        <select class="field-select" id="sel-day"><option value="">วัน</option></select>
+        <select class="field-select" id="sel-month"><option value="">เดือน</option></select>
+        <select class="field-select" id="sel-year"><option value="">ปี (ค.ศ.)</option></select>
       </div>
     </div>
-
     <div class="category-section">
-      <label class="field-label">✦ เลือกหมวดที่ต้องการทำนาย</label>
+      <div class="field-label" style="margin-bottom:12px;">✦ เลือกหมวดที่ต้องการทำนาย</div>
       <div class="category-grid" id="catGrid">
-        <label class="cat-pill selected">
-          <input type="checkbox" value="overview" checked>
-          <span class="cat-icon">🔮</span>
-          <span class="cat-name">ภาพรวมชีวิต</span>
-          <span class="cat-system">Thai · Chinese · Western</span>
-        </label>
-        <label class="cat-pill">
-          <input type="checkbox" value="love">
-          <span class="cat-icon">💕</span>
-          <span class="cat-name">ความรัก</span>
-          <span class="cat-system">Thai · Chinese · Western</span>
-        </label>
-        <label class="cat-pill">
-          <input type="checkbox" value="career">
-          <span class="cat-icon">💼</span>
-          <span class="cat-name">การงาน</span>
-          <span class="cat-system">Thai · Chinese · Western</span>
-        </label>
-        <label class="cat-pill">
-          <input type="checkbox" value="wealth">
-          <span class="cat-icon">💰</span>
-          <span class="cat-name">การเงิน</span>
-          <span class="cat-system">Thai · Chinese · Western</span>
-        </label>
-        <label class="cat-pill">
-          <input type="checkbox" value="health">
-            <span class="cat-icon">🌿</span>
-          <span class="cat-name">สุขภาพ</span>
-          <span class="cat-system">Thai · Chinese · Western</span>
-        </label>
-        <label class="cat-pill">
-          <input type="checkbox" value="luck">
-          <span class="cat-icon">🌟</span>
-          <span class="cat-name">โชคลาภ</span>
-          <span class="cat-system">Thai · Chinese · Western</span>
-        </label>
+        <!-- filled by JS -->
       </div>
     </div>
-
-    <button class="btn-divine" id="divineBtn" onclick="runDivination()">
-      ✦ เปิดดูดวงชะตา ✦
-    </button>
+    <button class="btn-divine" id="divineBtn">✦ เปิดดูดวงชะตา ✦</button>
   </div>
 </section>
 
 <!-- RESULT -->
 <section class="result-section" id="resultSection">
-  <div class="section-title" style="margin-bottom: 32px;">
+  <div class="section-title" style="margin-bottom:32px;">
     <span class="section-eyebrow">✦ ผลการทำนาย ✦</span>
     <h2 class="section-heading" id="resultName">ดวงชะตาของ...</h2>
     <div class="section-divider"></div>
   </div>
-
   <div class="result-tabs" id="resultTabs"></div>
   <div id="resultPanels"></div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>ดาวทำนาย — ศาสตร์แห่งดวงชะตา ✦ ข้อมูลนี้เพื่อความบันเทิงและการพิจารณาตนเองเท่านั้น</p>
 </footer>
 
 <script>
-// ── STARS GENERATION ──
-(function generateStars() {
+// ── STARS ──
+(function(){
   const layer = document.getElementById('starsLayer');
-  for (let i = 0; i < 180; i++) {
-    const s = document.createElement('div');
-    s.className = 'star-dot';
-    const size = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `
-      width:${size}px; height:${size}px;
-      top:${Math.random()*100}%; left:${Math.random()*100}%;
-      --d:${2+Math.random()*4}s;
-      --delay:${Math.random()*5}s;
-      --min-op:${0.1+Math.random()*0.3};
-      opacity:${0.2+Math.random()*0.5};
-    `;
+  for(let i=0;i<180;i++){
+    const s=document.createElement('div');
+    s.className='star-dot';
+    const sz=Math.random()*2.5+0.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--min-op:${.1+Math.random()*.3};opacity:${.2+Math.random()*.5}`;
     layer.appendChild(s);
   }
 })();
 
 // ── PARALLAX ──
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  document.getElementById('parallaxBg').style.transform = `translateY(${scrollY * 0.4}px)`;
-  document.querySelectorAll('.nebula').forEach((n, i) => {
-    n.style.transform = `translateY(${scrollY * (0.15 + i*0.05)}px)`;
-  });
+window.addEventListener('scroll',()=>{
+  document.getElementById('parallaxBg').style.transform=`translateY(${window.scrollY*.4}px)`;
 });
 
 // ── POPULATE SELECTS ──
-const dayEl = document.getElementById('sel-day');
-const monEl = document.getElementById('sel-month');
-const yrEl = document.getElementById('sel-year');
+const dayEl=document.getElementById('sel-day');
+const monEl=document.getElementById('sel-month');
+const yrEl=document.getElementById('sel-year');
 
-for (let d = 1; d <= 31; d++) {
-  dayEl.innerHTML += `<option value="${d}">${d}</option>`;
-}
-
-const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-months.forEach((m, i) => {
-  monEl.innerHTML += `<option value="${i+1}">${m}</option>`;
+for(let d=1;d<=31;d++) dayEl.innerHTML+=`<option value="${d}">${d}</option>`;
+['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'].forEach((m,i)=>{
+  monEl.innerHTML+=`<option value="${i+1}">${m}</option>`;
 });
+const curYear=new Date().getFullYear();
+for(let y=curYear;y>=1930;y--) yrEl.innerHTML+=`<option value="${y}">${y}</option>`;
 
-const curYear = new Date().getFullYear();
-for (let y = curYear; y >= 1930; y--) {
-  yrEl.innerHTML += `<option value="${y}">${y}</option>`;
-}
+// ── CATEGORIES (pure DIV, no label/checkbox) ──
+const CATS = [
+  { id:'overview', icon:'🔮', name:'ภาพรวมชีวิต', sub:'Thai · Chinese · Western', selected:true },
+  { id:'love',     icon:'💕', name:'ความรัก',      sub:'Thai · Chinese · Western', selected:false },
+  { id:'career',   icon:'💼', name:'การงาน',       sub:'Thai · Chinese · Western', selected:false },
+  { id:'wealth',   icon:'💰', name:'การเงิน',      sub:'Thai · Chinese · Western', selected:false },
+  { id:'health',   icon:'🌿', name:'สุขภาพ',       sub:'Thai · Chinese · Western', selected:false },
+  { id:'luck',     icon:'🌟', name:'โชคลาภ',       sub:'Thai · Chinese · Western', selected:false },
+];
 
-// ── CATEGORY TOGGLE ──
-document.querySelectorAll('.cat-pill').forEach(pill => {
-  pill.addEventListener('click', () => {
-    pill.classList.toggle('selected');
+const catGrid = document.getElementById('catGrid');
+CATS.forEach(cat => {
+  const div = document.createElement('div');
+  div.className = 'cat-pill' + (cat.selected ? ' selected' : '');
+  div.dataset.id = cat.id;
+  div.innerHTML = `<span class="cat-icon">${cat.icon}</span><span class="cat-name">${cat.name}</span><span class="cat-system">${cat.sub}</span>`;
+  div.addEventListener('click', function() {
+    cat.selected = !cat.selected;
+    this.classList.toggle('selected', cat.selected);
   });
+  catGrid.appendChild(div);
 });
 
-// ── ASTROLOGY HELPERS ──
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── ASTROLOGY CALCULATIONS ──
 function getThaiDay(day, month, year) {
-  const d = new Date(year, month - 1, day);
-  const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์'];
-  return days[d.getDay()];
+  const days=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์'];
+  return days[new Date(year, month-1, day).getDay()];
 }
 
 function getZodiac(day, month) {
-  // Each entry: [cutoffDay, month, zodiacName for people born ON or BEFORE cutoffDay of that month]
-  // If born after cutoffDay, they belong to the next sign
-  const signs = [
-    { name: 'มังกร',   endMonth: 1,  endDay: 19 },
-    { name: 'กุมภ์',   endMonth: 2,  endDay: 18 },
-    { name: 'มีน',    endMonth: 3,  endDay: 20 },
-    { name: 'เมษ',    endMonth: 4,  endDay: 19 },
-    { name: 'พฤษภ',   endMonth: 5,  endDay: 20 },
-    { name: 'เมถุน',  endMonth: 6,  endDay: 20 },
-    { name: 'กรกฎ',   endMonth: 7,  endDay: 22 },
-    { name: 'สิงห์',  endMonth: 8,  endDay: 22 },
-    { name: 'กันย์',  endMonth: 9,  endDay: 22 },
-    { name: 'ตุล',    endMonth: 10, endDay: 22 },
-    { name: 'พิจิก',  endMonth: 11, endDay: 21 },
-    { name: 'ธนู',    endMonth: 12, endDay: 21 },
+  // [endDay, endMonth] → if date <= endDay of endMonth, sign name
+  const table = [
+    [19,1,'มังกร'],[18,2,'กุมภ์'],[20,3,'มีน'],[19,4,'เมษ'],
+    [20,5,'พฤษภ'],[20,6,'เมถุน'],[22,7,'กรกฎ'],[22,8,'สิงห์'],
+    [22,9,'กันย์'],[22,10,'ตุล'],[21,11,'พิจิก'],[21,12,'ธนู']
   ];
-  for (const sign of signs) {
-    if (month === sign.endMonth && day <= sign.endDay) return sign.name;
-    if (month === sign.endMonth && day > sign.endDay) {
-      // belongs to next sign
-      const nextIdx = signs.indexOf(sign) + 1;
-      return signs[nextIdx % 12].name;
-    }
-    // month before endMonth but in same "window"
-    const prevIdx = signs.indexOf(sign);
-    const prevSign = signs[(prevIdx + 11) % 12];
-    if (month === prevSign.endMonth + 1 || (prevSign.endMonth === 12 && month === 1)) {
-      if (day > prevSign.endDay) return sign.name;
-    }
-  }
-  return 'มังกร';
-}
-
-function getZodiacAccurate(day, month) {
-  // Simple lookup table approach — most accurate
-  const dates = [
-    [1,20,'กุมภ์'], [2,19,'มีน'],  [3,21,'เมษ'],
-    [4,20,'พฤษภ'], [5,21,'เมถุน'],[6,21,'กรกฎ'],
-    [7,23,'สิงห์'], [8,23,'กันย์'],[9,23,'ตุล'],
-    [10,23,'พิจิก'],[11,22,'ธนู'], [12,22,'มังกร'],
-  ];
-  for (const [m, d, name] of dates) {
-    if (month === m && day <= d) return name;
-    if (month === m && day > d) {
-      const nextIdx = dates.findIndex(x => x[0] === m) + 1;
-      return dates[nextIdx % 12][2];
+  for(const [ed,em,name] of table){
+    if(month===em && day<=ed) return name;
+    // after cutoff → next sign
+    if(month===em && day>ed){
+      const idx=table.findIndex(x=>x[0]===ed&&x[1]===em);
+      return table[(idx+1)%12][2];
     }
   }
   return 'มังกร';
 }
 
 function getChineseZodiac(year) {
-  // 2020 = ลิง (reference year)
-  const animals = ['ลิง','ไก่','หมา','หมู','หนู','วัว','เสือ','กระต่าย','มังกร','งู','ม้า','แพะ'];
-  return animals[((year - 2016) % 12 + 12) % 12];
+  const animals=['ลิง','ไก่','หมา','หมู','หนู','วัว','เสือ','กระต่าย','มังกร','งู','ม้า','แพะ'];
+  return animals[((year-2016)%12+12)%12];
 }
 
 function getChineseElement(year) {
-  // Heavenly stems cycle: last digit determines element
-  const elMap = { 0:'ทอง', 1:'ทอง', 2:'น้ำ', 3:'น้ำ', 4:'ไม้', 5:'ไม้', 6:'ไฟ', 7:'ไฟ', 8:'ดิน', 9:'ดิน' };
-  return elMap[year % 10] || 'ไม้';
+  return ['ทอง','ทอง','น้ำ','น้ำ','ไม้','ไม้','ไฟ','ไฟ','ดิน','ดิน'][year%10];
 }
 
-// ── MAIN DIVINATION ──
-async function runDivination() {
-  const name = document.getElementById('name-input').value.trim();
-  const dayVal = document.getElementById('sel-day').value;
-  const monthVal = document.getElementById('sel-month').value;
-  const yearVal = document.getElementById('sel-year').value;
-
-  if (!name) { showToast('กรุณากรอกชื่อจริงของคุณ'); return; }
-  if (!dayVal || dayVal === '') { showToast('กรุณาเลือกวันเกิด'); return; }
-  if (!monthVal || monthVal === '') { showToast('กรุณาเลือกเดือนเกิด'); return; }
-  if (!yearVal || yearVal === '') { showToast('กรุณาเลือกปีเกิด'); return; }
-
-  const day = parseInt(dayVal);
-  const month = parseInt(monthVal);
-  const year = parseInt(yearVal);
-
-  const selected = [...document.querySelectorAll('.cat-pill.selected input')].map(i => i.value);
-  if (selected.length === 0) {
-    showToast('กรุณาเลือกอย่างน้อยหนึ่งหมวดที่ต้องการทำนาย');
-    return;
-  }
-
-  const btn = document.getElementById('divineBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="btn-spinner"></span> กำลังอ่านดวงชะตา...';
-
-  // Prepare astro data
-  const thaiDay = getThaiDay(day, month, year);
-  const zodiac = getZodiacAccurate(day, month);
-  const chineseAnimal = getChineseZodiac(year);
-  const chineseElement = getChineseElement(year);
-  const buddhistYear = year + 543;
-
-  const resultSection = document.getElementById('resultSection');
-  document.getElementById('resultName').textContent = `ดวงชะตาของ ${name}`;
-  resultSection.classList.add('visible');
-  resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  const catLabels = {
-    overview: { icon: '🔮', label: 'ภาพรวมชีวิต' },
-    love: { icon: '💕', label: 'ความรัก' },
-    career: { icon: '💼', label: 'การงาน' },
-    wealth: { icon: '💰', label: 'การเงิน' },
-    health: { icon: '🌿', label: 'สุขภาพ' },
-    luck: { icon: '🌟', label: 'โชคลาภ' }
-  };
-
-  // Build tabs
-  const tabsEl = document.getElementById('resultTabs');
-  const panelsEl = document.getElementById('resultPanels');
-  tabsEl.innerHTML = '';
-  panelsEl.innerHTML = '';
-
-  selected.forEach((cat, idx) => {
-    const { icon, label } = catLabels[cat];
-    const tab = document.createElement('button');
-    tab.className = 'result-tab' + (idx === 0 ? ' active' : '');
-    tab.textContent = `${icon} ${label}`;
-    tab.dataset.cat = cat;
-    tab.onclick = () => {
-      document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.result-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(`panel-${cat}`).classList.add('active');
-    };
-    tabsEl.appendChild(tab);
-
-    const panel = document.createElement('div');
-    panel.className = 'result-panel' + (idx === 0 ? ' active' : '');
-    panel.id = `panel-${cat}`;
-    panel.innerHTML = `
-      <div class="loading-orb"><div class="orb"></div><p class="loading-text">กำลังอ่านดวง${label}...</p></div>
-    `;
-    panelsEl.appendChild(panel);
-  });
-
-  // Call AI for each selected category sequentially
-  for (const cat of selected) {
-    await fetchDivination(name, day, month, year, cat, thaiDay, zodiac, chineseAnimal, chineseElement, buddhistYear);
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '✦ เปิดดูดวงชะตาอีกครั้ง ✦';
+// ── FORMAT RESPONSE ──
+function formatText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n\n+/g,'</p><p>')
+    .replace(/\n/g,'<br>');
 }
 
-async function fetchDivination(name, day, month, year, category, thaiDay, zodiac, chineseAnimal, chineseElement, buddhistYear) {
-  const catNames = { overview:'ภาพรวมชีวิตและบุคลิกภาพ', love:'ความรักและความสัมพันธ์', career:'การงานและอาชีพ', wealth:'การเงินและทรัพย์สิน', health:'สุขภาพและพลังชีวิต', luck:'โชคลาภและฤกษ์ยาม' };
-  const catName = catNames[category];
-  const monthThai = ['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'][month];
+// ── FETCH WITH STREAMING ──
+async function fetchCategory(name,day,month,year,cat,thaiDay,zodiac,animal,element,bYear) {
+  const catNames={overview:'ภาพรวมชีวิตและบุคลิกภาพ',love:'ความรักและความสัมพันธ์',career:'การงานและอาชีพ',wealth:'การเงินและทรัพย์สิน',health:'สุขภาพและพลังชีวิต',luck:'โชคลาภและฤกษ์ยาม'};
+  const monthThai=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'][month];
+  const catColors={overview:'all',love:'thai',career:'western',wealth:'chinese',health:'jade',luck:'all'};
 
-  const prompt = `คุณเป็นโหรผู้เชี่ยวชาญสามศาสตร์: โหราศาสตร์ไทยโบราณ, โหราศาสตร์จีน และโหราศาสตร์ตะวันตก
+  const prompt=`คุณเป็นโหรผู้เชี่ยวชาญสามศาสตร์: โหราศาสตร์ไทยโบราณ, โหราศาสตร์จีน และโหราศาสตร์ตะวันตก
 
 ข้อมูลผู้ขอดูดวง:
 - ชื่อ: ${name}
-- วันเกิด: ${day} ${monthThai} พ.ศ. ${buddhistYear} (ค.ศ. ${year})
+- วันเกิด: ${day} ${monthThai} พ.ศ. ${bYear} (ค.ศ. ${year})
 - วันเกิด: วัน${thaiDay}
 - ราศีตะวันตก: ${zodiac}
-- นักษัตรจีน: ปีนักษัตร${chineseAnimal} ธาตุ${chineseElement}
+- นักษัตรจีน: ปีนักษัตร${animal} ธาตุ${element}
 
-โปรดทำนาย "${catName}" โดยแบ่งเป็น 3 ส่วน:
+โปรดทำนาย "${catNames[cat]}" โดยแบ่งเป็น 3 ส่วน:
 
 🏮 **โหราศาสตร์ไทย** (อ้างอิงจากวันเกิด ราศี นักษัตรไทย และหลักโบราณ)
 [ทำนาย 3-4 ประโยค]
@@ -968,104 +392,132 @@ async function fetchDivination(name, day, month, year, category, thaiDay, zodiac
 ✨ **สรุปภาพรวม**
 [สรุป 2-3 ประโยค]
 
-ตอบเป็นภาษาไทยที่ไพเราะ มีพลัง และให้กำลังใจ อย่าสั้นเกินไป`;
+ตอบเป็นภาษาไทยที่ไพเราะ มีพลัง และให้กำลังใจ`;
 
-  const panel = document.getElementById(`panel-${category}`);
-  const catColors = { overview:'all', love:'thai', career:'western', wealth:'chinese', health:'jade', luck:'all' };
-  const catClass = catColors[category] || 'all';
-
-  // Set up panel with streaming container
-  panel.innerHTML = `
-    <div class="result-card ${catClass}">
-      <div class="result-body" id="stream-${category}"></div>
-    </div>
-  `;
-  const streamEl = document.getElementById(`stream-${category}`);
+  const panel = document.getElementById(`panel-${cat}`);
+  const colorClass = catColors[cat]||'all';
+  panel.innerHTML=`<div class="result-card ${colorClass}"><div class="result-body" id="stream-${cat}"><p></p></div></div>`;
+  const streamEl=document.getElementById(`stream-${cat}`);
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
       },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1200,
-        stream: true,
-        messages: [{ role: 'user', content: prompt }]
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1200,
+        stream:true,
+        messages:[{role:'user',content:prompt}]
       })
     });
 
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    if(!resp.ok){
+      const err=await resp.json().catch(()=>({}));
+      throw new Error(err.error?.message||`HTTP ${resp.status}`);
     }
 
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let fullText = '';
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop(); // keep incomplete line
-
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (data === '[DONE]') continue;
-        try {
-          const json = JSON.parse(data);
-          if (json.type === 'content_block_delta' && json.delta?.type === 'text_delta') {
-            fullText += json.delta.text;
-            streamEl.innerHTML = formatDivinationText(fullText) + '<span class="cursor-blink">▋</span>';
+    const reader=resp.body.getReader();
+    const decoder=new TextDecoder();
+    let fullText='',buf='';
+    while(true){
+      const{done,value}=await reader.read();
+      if(done) break;
+      buf+=decoder.decode(value,{stream:true});
+      const lines=buf.split('\n');
+      buf=lines.pop();
+      for(const line of lines){
+        if(!line.startsWith('data: ')) continue;
+        const d=line.slice(6).trim();
+        if(d==='[DONE]') continue;
+        try{
+          const j=JSON.parse(d);
+          if(j.type==='content_block_delta'&&j.delta?.type==='text_delta'){
+            fullText+=j.delta.text;
+            streamEl.innerHTML='<p>'+formatText(fullText)+'</p><span class="cursor-blink">▋</span>';
           }
-        } catch {}
+        }catch{}
       }
     }
-
-    // Final render without cursor
-    streamEl.innerHTML = formatDivinationText(fullText);
-
-  } catch (e) {
-    panel.innerHTML = `
-      <div class="result-card">
-        <div class="error-box">
-          <span class="error-icon">⚠️</span>
-          <p>เกิดข้อผิดพลาด: ${e.message || 'กรุณาลองใหม่อีกครั้ง'}</p>
-        </div>
-      </div>`;
+    streamEl.innerHTML='<p>'+formatText(fullText)+'</p>';
+  } catch(e){
+    panel.innerHTML=`<div class="result-card"><div class="error-box"><span class="error-icon">⚠️</span><div><strong>เกิดข้อผิดพลาด</strong><br>${e.message||'กรุณาลองใหม่อีกครั้ง'}</div></div></div>`;
   }
 }
 
-function formatDivinationText(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="gold-text">$1</strong>')
-    .replace(/🏮/g, '<span class="section-icon">🏮</span>')
-    .replace(/☯️/g, '<span class="section-icon">☯️</span>')
-    .replace(/⭐/g, '<span class="section-icon">⭐</span>')
-    .replace(/✨/g, '<span class="section-icon">✨</span>')
-    .replace(/\n\n/g, '</p><p class="para">')
-    .replace(/\n/g, '<br>');
-}
+// ── MAIN ──
+document.getElementById('divineBtn').addEventListener('click', async function() {
+  const name=document.getElementById('name-input').value.trim();
+  const dayV=document.getElementById('sel-day').value;
+  const monV=document.getElementById('sel-month').value;
+  const yrV=document.getElementById('sel-year').value;
 
-function showToast(msg) {
-  let t = document.getElementById('toast');
-  if (!t) {
-    t = document.createElement('div');
-    t.id = 'toast';
-    document.body.appendChild(t);
+  if(!name){ showToast('กรุณากรอกชื่อจริงของคุณ'); return; }
+  if(!dayV){ showToast('กรุณาเลือกวันเกิด'); return; }
+  if(!monV){ showToast('กรุณาเลือกเดือนเกิด'); return; }
+  if(!yrV){ showToast('กรุณาเลือกปีเกิด'); return; }
+
+  const selected=CATS.filter(c=>c.selected).map(c=>c.id);
+  if(!selected.length){ showToast('กรุณาเลือกอย่างน้อย 1 หมวด'); return; }
+
+  const day=parseInt(dayV), month=parseInt(monV), year=parseInt(yrV);
+  const thaiDay=getThaiDay(day,month,year);
+  const zodiac=getZodiac(day,month);
+  const animal=getChineseZodiac(year);
+  const element=getChineseElement(year);
+  const bYear=year+543;
+
+  const catLabels={overview:{icon:'🔮',label:'ภาพรวมชีวิต'},love:{icon:'💕',label:'ความรัก'},career:{icon:'💼',label:'การงาน'},wealth:{icon:'💰',label:'การเงิน'},health:{icon:'🌿',label:'สุขภาพ'},luck:{icon:'🌟',label:'โชคลาภ'}};
+
+  // Show result section
+  document.getElementById('resultName').textContent=`ดวงชะตาของ ${name}`;
+  const resultSection=document.getElementById('resultSection');
+  resultSection.classList.add('visible');
+
+  // Build tabs & panels
+  const tabsEl=document.getElementById('resultTabs');
+  const panelsEl=document.getElementById('resultPanels');
+  tabsEl.innerHTML='';
+  panelsEl.innerHTML='';
+
+  selected.forEach((cat,idx)=>{
+    const{icon,label}=catLabels[cat];
+    const tab=document.createElement('button');
+    tab.className='result-tab'+(idx===0?' active':'');
+    tab.textContent=`${icon} ${label}`;
+    tab.addEventListener('click',function(){
+      document.querySelectorAll('.result-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.result-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`panel-${cat}`).classList.add('active');
+    });
+    tabsEl.appendChild(tab);
+
+    const panel=document.createElement('div');
+    panel.className='result-panel'+(idx===0?' active':'');
+    panel.id=`panel-${cat}`;
+    panel.innerHTML=`<div class="loading-orb"><div class="orb"></div><p class="loading-text">กำลังอ่านดวง${label}...</p></div>`;
+    panelsEl.appendChild(panel);
+  });
+
+  resultSection.scrollIntoView({behavior:'smooth',block:'start'});
+
+  // Disable button
+  const btn=this;
+  btn.disabled=true;
+  btn.innerHTML='<span class="btn-spinner"></span> กำลังอ่านดวงชะตา...';
+
+  // Fetch all categories
+  for(const cat of selected){
+    await fetchCategory(name,day,month,year,cat,thaiDay,zodiac,animal,element,bYear);
   }
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
-}
+
+  btn.disabled=false;
+  btn.innerHTML='✦ เปิดดูดวงชะตาอีกครั้ง ✦';
+});
 </script>
 </body>
 </html>
