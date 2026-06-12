@@ -507,6 +507,82 @@
   .highlight-jade { color: var(--jade-light); font-weight: 600; }
   .highlight-rose { color: var(--rose-light); font-weight: 600; }
   .highlight-indigo { color: var(--indigo-light); font-weight: 600; }
+
+  /* ── JADE CARD ── */
+  .result-card.jade { --accent-grad: linear-gradient(90deg, var(--jade), var(--jade-light)); }
+
+  /* ── GOLD TEXT ── */
+  .gold-text { color: var(--gold-light); }
+
+  /* ── SECTION ICONS ── */
+  .section-icon { font-size: 1.3rem; display: inline-block; vertical-align: middle; margin-right: 4px; }
+
+  /* ── PARA SPACING ── */
+  .para { margin-top: 1em; display: block; }
+
+  /* ── CURSOR BLINK ── */
+  .cursor-blink {
+    display: inline-block;
+    color: var(--gold);
+    animation: blink 0.8s step-end infinite;
+    font-weight: 300;
+    margin-left: 2px;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* ── BTN SPINNER ── */
+  .btn-spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: spin-fast 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(30,20,60,0.95);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-family: 'Sarabun', sans-serif;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+    white-space: nowrap;
+  }
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── ERROR BOX ── */
+  .error-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 24px;
+    border-radius: 12px;
+    background: rgba(255,80,80,0.07);
+    border: 1px solid rgba(255,80,80,0.15);
+    color: rgba(255,150,150,0.9);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .error-icon { font-size: 1.4rem; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -716,56 +792,101 @@ function getThaiDay(day, month, year) {
 }
 
 function getZodiac(day, month) {
-  const z = [
-    [1,20,'มังกร'],[2,19,'กุมภ์'],[3,20,'มีน'],[4,20,'เมษ'],
-    [5,21,'พฤษภ'],[6,21,'เมถุน'],[7,22,'กรกฎ'],[8,23,'สิงห์'],
-    [9,23,'กันย์'],[10,23,'ตุล'],[11,22,'พิจิก'],[12,22,'ธนู'],[12,31,'มังกร']
+  // Each entry: [cutoffDay, month, zodiacName for people born ON or BEFORE cutoffDay of that month]
+  // If born after cutoffDay, they belong to the next sign
+  const signs = [
+    { name: 'มังกร',   endMonth: 1,  endDay: 19 },
+    { name: 'กุมภ์',   endMonth: 2,  endDay: 18 },
+    { name: 'มีน',    endMonth: 3,  endDay: 20 },
+    { name: 'เมษ',    endMonth: 4,  endDay: 19 },
+    { name: 'พฤษภ',   endMonth: 5,  endDay: 20 },
+    { name: 'เมถุน',  endMonth: 6,  endDay: 20 },
+    { name: 'กรกฎ',   endMonth: 7,  endDay: 22 },
+    { name: 'สิงห์',  endMonth: 8,  endDay: 22 },
+    { name: 'กันย์',  endMonth: 9,  endDay: 22 },
+    { name: 'ตุล',    endMonth: 10, endDay: 22 },
+    { name: 'พิจิก',  endMonth: 11, endDay: 21 },
+    { name: 'ธนู',    endMonth: 12, endDay: 21 },
   ];
-  for (const [m, endD, name] of z) {
-    if (month === m && day <= endD) return name;
-    if (month === m - 1 && day >= endD + 1) return z[z.indexOf([m,endD,name]) - 1]?.[2] || name;
+  for (const sign of signs) {
+    if (month === sign.endMonth && day <= sign.endDay) return sign.name;
+    if (month === sign.endMonth && day > sign.endDay) {
+      // belongs to next sign
+      const nextIdx = signs.indexOf(sign) + 1;
+      return signs[nextIdx % 12].name;
+    }
+    // month before endMonth but in same "window"
+    const prevIdx = signs.indexOf(sign);
+    const prevSign = signs[(prevIdx + 11) % 12];
+    if (month === prevSign.endMonth + 1 || (prevSign.endMonth === 12 && month === 1)) {
+      if (day > prevSign.endDay) return sign.name;
+    }
+  }
+  return 'มังกร';
+}
+
+function getZodiacAccurate(day, month) {
+  // Simple lookup table approach — most accurate
+  const dates = [
+    [1,20,'กุมภ์'], [2,19,'มีน'],  [3,21,'เมษ'],
+    [4,20,'พฤษภ'], [5,21,'เมถุน'],[6,21,'กรกฎ'],
+    [7,23,'สิงห์'], [8,23,'กันย์'],[9,23,'ตุล'],
+    [10,23,'พิจิก'],[11,22,'ธนู'], [12,22,'มังกร'],
+  ];
+  for (const [m, d, name] of dates) {
+    if (month === m && day <= d) return name;
+    if (month === m && day > d) {
+      const nextIdx = dates.findIndex(x => x[0] === m) + 1;
+      return dates[nextIdx % 12][2];
+    }
   }
   return 'มังกร';
 }
 
 function getChineseZodiac(year) {
+  // 2020 = ลิง (reference year)
   const animals = ['ลิง','ไก่','หมา','หมู','หนู','วัว','เสือ','กระต่าย','มังกร','งู','ม้า','แพะ'];
-  return animals[(year - 2016 % 12 + 1200) % 12];
+  return animals[((year - 2016) % 12 + 12) % 12];
 }
 
 function getChineseElement(year) {
-  const elements = ['ทอง','ทอง','น้ำ','น้ำ','ไม้','ไม้','ไฟ','ไฟ','ดิน','ดิน'];
-  return elements[year % 10];
+  // Heavenly stems cycle: last digit determines element
+  const elMap = { 0:'ทอง', 1:'ทอง', 2:'น้ำ', 3:'น้ำ', 4:'ไม้', 5:'ไม้', 6:'ไฟ', 7:'ไฟ', 8:'ดิน', 9:'ดิน' };
+  return elMap[year % 10] || 'ไม้';
 }
 
 // ── MAIN DIVINATION ──
 async function runDivination() {
   const name = document.getElementById('name-input').value.trim();
-  const day = document.getElementById('sel-day').value;
-  const month = document.getElementById('sel-month').value;
-  const year = document.getElementById('sel-year').value;
+  const dayVal = document.getElementById('sel-day').value;
+  const monthVal = document.getElementById('sel-month').value;
+  const yearVal = document.getElementById('sel-year').value;
 
-  if (!name || !day || !month || !year) {
-    alert('กรุณากรอกชื่อและวันเดือนปีเกิดให้ครบถ้วน');
-    return;
-  }
+  if (!name) { showToast('กรุณากรอกชื่อจริงของคุณ'); return; }
+  if (!dayVal || dayVal === '') { showToast('กรุณาเลือกวันเกิด'); return; }
+  if (!monthVal || monthVal === '') { showToast('กรุณาเลือกเดือนเกิด'); return; }
+  if (!yearVal || yearVal === '') { showToast('กรุณาเลือกปีเกิด'); return; }
+
+  const day = parseInt(dayVal);
+  const month = parseInt(monthVal);
+  const year = parseInt(yearVal);
 
   const selected = [...document.querySelectorAll('.cat-pill.selected input')].map(i => i.value);
   if (selected.length === 0) {
-    alert('กรุณาเลือกอย่างน้อยหนึ่งหมวด');
+    showToast('กรุณาเลือกอย่างน้อยหนึ่งหมวดที่ต้องการทำนาย');
     return;
   }
 
   const btn = document.getElementById('divineBtn');
   btn.disabled = true;
-  btn.textContent = '✦ กำลังอ่านดวง...';
+  btn.innerHTML = '<span class="btn-spinner"></span> กำลังอ่านดวงชะตา...';
 
   // Prepare astro data
-  const thaiDay = getThaiDay(+day, +month, +year);
-  const zodiac = getZodiac(+day, +month);
-  const chineseAnimal = getChineseZodiac(+year);
-  const chineseElement = getChineseElement(+year);
-  const buddhistYear = +year + 543;
+  const thaiDay = getThaiDay(day, month, year);
+  const zodiac = getZodiacAccurate(day, month);
+  const chineseAnimal = getChineseZodiac(year);
+  const chineseElement = getChineseElement(year);
+  const buddhistYear = year + 543;
 
   const resultSection = document.getElementById('resultSection');
   document.getElementById('resultName').textContent = `ดวงชะตาของ ${name}`;
@@ -792,6 +913,7 @@ async function runDivination() {
     const tab = document.createElement('button');
     tab.className = 'result-tab' + (idx === 0 ? ' active' : '');
     tab.textContent = `${icon} ${label}`;
+    tab.dataset.cat = cat;
     tab.onclick = () => {
       document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.result-panel').forEach(p => p.classList.remove('active'));
@@ -809,13 +931,13 @@ async function runDivination() {
     panelsEl.appendChild(panel);
   });
 
-  // Call AI for each selected category
+  // Call AI for each selected category sequentially
   for (const cat of selected) {
-    await fetchDivination(name, +day, +month, +year, cat, thaiDay, zodiac, chineseAnimal, chineseElement, buddhistYear);
+    await fetchDivination(name, day, month, year, cat, thaiDay, zodiac, chineseAnimal, chineseElement, buddhistYear);
   }
 
   btn.disabled = false;
-  btn.textContent = '✦ เปิดดูดวงชะตาอีกครั้ง ✦';
+  btn.innerHTML = '✦ เปิดดูดวงชะตาอีกครั้ง ✦';
 }
 
 async function fetchDivination(name, day, month, year, category, thaiDay, zodiac, chineseAnimal, chineseElement, buddhistYear) {
@@ -849,40 +971,100 @@ async function fetchDivination(name, day, month, year, category, thaiDay, zodiac
 ตอบเป็นภาษาไทยที่ไพเราะ มีพลัง และให้กำลังใจ อย่าสั้นเกินไป`;
 
   const panel = document.getElementById(`panel-${category}`);
+  const catColors = { overview:'all', love:'thai', career:'western', wealth:'chinese', health:'jade', luck:'all' };
+  const catClass = catColors[category] || 'all';
+
+  // Set up panel with streaming container
+  panel.innerHTML = `
+    <div class="result-card ${catClass}">
+      <div class="result-body" id="stream-${category}"></div>
+    </div>
+  `;
+  const streamEl = document.getElementById(`stream-${category}`);
 
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        stream: true,
         messages: [{ role: 'user', content: prompt }]
       })
     });
 
-    const data = await resp.json();
-    const text = data.content?.[0]?.text || 'ไม่สามารถดึงข้อมูลได้ในขณะนี้';
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    }
 
-    // Format the response
-    const formatted = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--gold-light)">$1</strong>')
-      .replace(/🏮/g, '<span style="font-size:1.3rem">🏮</span>')
-      .replace(/☯️/g, '<span style="font-size:1.3rem">☯️</span>')
-      .replace(/⭐/g, '<span style="font-size:1.3rem">⭐</span>')
-      .replace(/✨/g, '<span style="font-size:1.3rem">✨</span>');
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+    let buffer = '';
 
-    const catColors = { overview:'all', love:'thai', career:'western', wealth:'chinese', health:'jade', luck:'all' };
-    const catClass = catColors[category] || 'all';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); // keep incomplete line
 
-    panel.innerHTML = `
-      <div class="result-card ${catClass}">
-        <div class="result-body">${formatted}</div>
-      </div>
-    `;
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const json = JSON.parse(data);
+          if (json.type === 'content_block_delta' && json.delta?.type === 'text_delta') {
+            fullText += json.delta.text;
+            streamEl.innerHTML = formatDivinationText(fullText) + '<span class="cursor-blink">▋</span>';
+          }
+        } catch {}
+      }
+    }
+
+    // Final render without cursor
+    streamEl.innerHTML = formatDivinationText(fullText);
+
   } catch (e) {
-    panel.innerHTML = `<div class="result-card"><p class="result-body" style="color:rgba(255,100,100,0.8)">เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง</p></div>`;
+    panel.innerHTML = `
+      <div class="result-card">
+        <div class="error-box">
+          <span class="error-icon">⚠️</span>
+          <p>เกิดข้อผิดพลาด: ${e.message || 'กรุณาลองใหม่อีกครั้ง'}</p>
+        </div>
+      </div>`;
   }
+}
+
+function formatDivinationText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="gold-text">$1</strong>')
+    .replace(/🏮/g, '<span class="section-icon">🏮</span>')
+    .replace(/☯️/g, '<span class="section-icon">☯️</span>')
+    .replace(/⭐/g, '<span class="section-icon">⭐</span>')
+    .replace(/✨/g, '<span class="section-icon">✨</span>')
+    .replace(/\n\n/g, '</p><p class="para">')
+    .replace(/\n/g, '<br>');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 </script>
 </body>
